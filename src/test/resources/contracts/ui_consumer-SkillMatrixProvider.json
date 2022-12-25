@@ -1,0 +1,193 @@
+{
+  "consumer": {
+    "name": "ui_consumer"
+  },
+  "interactions": [
+    {
+      "description": "get an organization by id",
+      "key": "6dba8247",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "organization with some users"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/organizations/123"
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "10001": 100,
+              "123": 100,
+              "email": "deniz.silahcilar@ing.com",
+              "lastName": "Silahcilar",
+              "name": "Deniz",
+              "photoURL": "https://mdbootstrap.com/img/new/avatars/4.jpg%27",
+              "role": "Engineer V",
+              "teamId": 100,
+              "userId": 100
+            },
+            {
+              "10002": 100,
+              "123": 100,
+              "email": "latif.bulut@ing.com",
+              "lastName": "Bulut",
+              "name": "Latif Ihsan",
+              "photoURL": "https://mdbootstrap.com/img/new/avatars/4.jpg%27",
+              "role": "Engineer 3",
+              "teamId": 100,
+              "userId": 100
+            }
+          ],
+          "contentType": "application/json; charset=UTF-8",
+          "encoded": false
+        },
+        "generators": {
+          "body": {
+            "$[0].10001": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[0].123": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[0].teamId": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[0].userId": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[1].10002": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[1].123": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[1].teamId": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            },
+            "$[1].userId": {
+              "max": 2147483647,
+              "min": 0,
+              "type": "RandomInt"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=UTF-8"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$[0].10001": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[0].123": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[0].teamId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[0].userId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[1].10002": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[1].123": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[1].teamId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$[1].userId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset=[\\w\\-]+)?"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      },
+      "transport": "https",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.4.2"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "SkillMatrixProvider"
+  }
+}
