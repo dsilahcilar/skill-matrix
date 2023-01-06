@@ -69,9 +69,11 @@ data class EmployeeSkill(
 )
 
 data class Project(
+    @JsonView(OrganizationDetailed::class)
     val name: String
 )
 
+//TODO: Project and projectSkills relationships should be added to DTO init class.
 data class ProjectSkill(
     val project: Project,
     val skill: Skill,

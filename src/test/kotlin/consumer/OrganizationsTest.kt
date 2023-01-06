@@ -18,27 +18,23 @@ import kotlin.test.assertEquals
 class OrganizationsTest() {
 
 
-    @Pact(provider="SkillMatrixProvider", consumer="ui_consumer")
-    fun createNewOrganization(builder: PactDslWithProvider) : V4Pact {
+    @Pact(provider = "SkillMatrixProvider", consumer = "ui_consumer")
+    fun getOneOrganization(builder: PactDslWithProvider): V4Pact {
 
         val body = newJsonArray {
             newObject {
-                integerType("userId","10001")
-                stringValue("name","Deniz")
-                stringValue("lastName","Silahcilar")
-                stringValue("email","deniz.silahcilar@ing.com")
-                stringValue("role","Engineer V")
-                integerType("teamId","123")
-                stringValue("photoURL","https://mdbootstrap.com/img/new/avatars/4.jpg%27")
-            }
-            newObject {
-                integerType("userId","10002")
-                stringValue("name","Latif Ihsan")
-                stringValue("lastName","Bulut")
-                stringValue("email","latif.bulut@ing.com")
-                stringValue("role","Engineer 3")
-                integerType("teamId","123")
-                stringValue("photoURL","https://mdbootstrap.com/img/new/avatars/4.jpg%27")
+                integerType("id", "10001")
+                stringValue("name", "Wholesale Banking")
+                integerType("parentId", 1)
+                eachArrayLike("employees") {
+                    newObject {
+                        integerType("id", "1")
+                        stringType("firstName", "Deniz")
+                        stringType("lastName", "Silahcilar")
+                        stringType("email", "Deniz.Silahcilar@ing.com")
+                    }
+                }
+
             }
         }
 
@@ -46,7 +42,7 @@ class OrganizationsTest() {
         return builder
             .given("organization with some users")
             .uponReceiving("get an organization by id")
-            .path("/organizations/123")
+            .matchPath("/organizations/[0-9]+","/organizations/10001")
             .method("GET")
             .willRespondWith()
             .status(200)
@@ -61,8 +57,8 @@ class OrganizationsTest() {
     @Throws(IOException::class)
     fun test(mockServer: MockServer) {
         val restTemplate = RestTemplate()
-        val response = restTemplate.getForEntity(mockServer.getUrl() + "/organizations/123",String::class.java)
-        assertEquals(response.statusCode.value(),200);
+        val response = restTemplate.getForEntity(mockServer.getUrl() + "/organizations/10001", String::class.java)
+        assertEquals(response.statusCode.value(), 200);
     }
 
 }

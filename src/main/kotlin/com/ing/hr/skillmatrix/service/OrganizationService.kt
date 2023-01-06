@@ -1,9 +1,9 @@
 package com.ing.hr.skillmatrix.service
 
-import com.ing.hr.skillmatrix.data.*
 import com.ing.hr.skillmatrix.dto.EmployeeSkill
 import com.ing.hr.skillmatrix.dto.Organization
 import com.ing.hr.skillmatrix.dto.Project
+import com.ing.hr.skillmatrix.persistence.*
 import org.springframework.stereotype.Service
 
 @Service
@@ -43,6 +43,12 @@ class OrganizationService(
         return organization.get().toDTO()
     }
 
+    fun addProject(organizationID: Long, project: Project): Organization {
+        val organization = organizationRepository.findById(organizationID).get()
+        organization.addProject(ProjectEntity(project.name))
+        return organizationRepository.save(organization).toDTO()
+    }
+
 }
 
 
@@ -61,6 +67,3 @@ fun EmployeeSkillEntity.toDTO(): EmployeeSkill {
     return EmployeeSkill(this.skill.name, this.level)
 }
 
-fun ProjectEntity.toDTO(): Project {
-    return Project(this.name)
-}

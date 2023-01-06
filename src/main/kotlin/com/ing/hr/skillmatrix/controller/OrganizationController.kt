@@ -31,7 +31,7 @@ class OrganizationController(val organizationService: OrganizationService) {
 
     @PutMapping("/{id}/suborganizations")
     @JsonView(OrganizationDetailed::class)
-    fun addSubOrganization(@PathVariable parentId: Long, @RequestBody organization: Organization) {
-        organizationService.addSubOrganization(parentId, organization)
+    fun addSubOrganization(@PathVariable id: Long, @RequestBody organization: Organization) {
+        organizationService.addSubOrganization(id, organization)
     }
 }

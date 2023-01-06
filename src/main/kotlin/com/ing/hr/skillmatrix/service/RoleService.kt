@@ -1,10 +1,10 @@
 package com.ing.hr.skillmatrix.service
 
-import com.ing.hr.skillmatrix.data.RoleEntity
-import com.ing.hr.skillmatrix.data.RoleRepository
-import com.ing.hr.skillmatrix.data.SkillEntity
 import com.ing.hr.skillmatrix.dto.Role
 import com.ing.hr.skillmatrix.dto.Skill
+import com.ing.hr.skillmatrix.persistence.RoleEntity
+import com.ing.hr.skillmatrix.persistence.RoleRepository
+import com.ing.hr.skillmatrix.persistence.SkillEntity
 import org.springframework.stereotype.Service
 
 @Service

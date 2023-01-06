@@ -1,4 +1,4 @@
-package com.ing.hr.skillmatrix.data
+package com.ing.hr.skillmatrix.persistence
 
 import jakarta.persistence.*
 
@@ -42,6 +42,7 @@ data class OrganizationEntity(
 
     fun addProject(project: ProjectEntity): OrganizationEntity {
         project.organization = this
+        projectList.add(project)
         return this
     }
 
@@ -158,16 +159,23 @@ data class EmployeeSkillEntity(
 @Entity
 @Table(name = "project")
 data class ProjectEntity(
-    @Id @GeneratedValue val id: Long? = null,
+
     val name: String
 ) {
+    @Id
+    @GeneratedValue
+    val id: Long? = null
+
     @ManyToOne
     var organization: OrganizationEntity? = null
+
+    @OneToMany
+    var projectSkills: MutableList<ProjectSkillEntity> = mutableListOf()
 }
 
 @Entity
 @Table(name = "project_skill")
-data class ProjectSkill(
+data class ProjectSkillEntity(
     @Id @GeneratedValue val id: Long? = null,
     @OneToOne
     val project: ProjectEntity,
