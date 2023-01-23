@@ -6,7 +6,11 @@ import com.ing.hr.skillmatrix.dto.Employee
 import com.ing.hr.skillmatrix.dto.Organization
 import com.ing.hr.skillmatrix.dto.Project
 import com.ing.hr.skillmatrix.dto.Role
+import com.ing.hr.skillmatrix.persistence.OrganizationRepository
+import org.springframework.boot.context.event.ApplicationReadyEvent
+import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DTOInitilizationService(
@@ -14,7 +18,7 @@ class DTOInitilizationService(
     private val projectService: ProjectService,
     private val organizationService: OrganizationService,
     private val roleService: RoleService,
-    private val dataGenerators: DataGenerators
+    private val dataGenerators: DataGenerators,
 ) {
 
     fun addOrganizations() {
@@ -25,6 +29,7 @@ class DTOInitilizationService(
             addProjects(eachOrganization.id!!)
         }
     }
+
 
     private fun addProjects(organizationID: Long) {
         (1..5).map {

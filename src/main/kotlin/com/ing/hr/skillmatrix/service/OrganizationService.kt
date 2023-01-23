@@ -2,6 +2,7 @@ package com.ing.hr.skillmatrix.service
 
 import com.ing.hr.skillmatrix.dto.EmployeeSkill
 import com.ing.hr.skillmatrix.dto.Organization
+import com.ing.hr.skillmatrix.dto.OrganizationTree
 import com.ing.hr.skillmatrix.dto.Project
 import com.ing.hr.skillmatrix.persistence.*
 import org.springframework.stereotype.Service
@@ -11,6 +12,26 @@ class OrganizationService(
     private val organizationRepository: OrganizationRepository,
     private val employeeRepository: EmployeeRepository
 ) {
+
+    fun organizationTree(): OrganizationTree {
+        val rootOrganization = organizationRepository.findByParentNull().first()
+        return OrganizationTree(
+            rootOrganization.id!!,
+            rootOrganization.name,
+            buildSubOrganizations(rootOrganization.subOrganizations)
+        )
+    }
+
+    fun buildSubOrganizations(subOrganizationsEntity: List<OrganizationEntity>) : List<OrganizationTree> {
+        return subOrganizationsEntity.map {
+            OrganizationTree(
+                it.id!!,
+                it.name,
+                buildSubOrganizations(it.subOrganizations)
+            )
+        }
+    }
+
 
     fun addEmployee(employeeID: Long, organizationID: Long) {
         val organization = organizationRepository.findById(organizationID).get()

@@ -1,5 +1,6 @@
 package com.ing.hr.skillmatrix.service
 
+import com.ing.hr.skillmatrix.databuilder.ORGANIZATIONS
 import com.ing.hr.skillmatrix.persistence.*
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
@@ -11,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional
 class JPAInitializationService(
     private val roleRepository: RoleRepository,
     private val skillRepository: SkillRepository,
-    private val dtoInitilizationService: DTOInitilizationService
+    private val dtoInitilizationService: DTOInitilizationService,
+    private val organizationRepository: OrganizationRepository
 ) {
 
     @EventListener(ApplicationReadyEvent::class)
@@ -41,6 +43,41 @@ class JPAInitializationService(
         roleRepository.save(cl)
 
         dtoInitilizationService.addOrganizations()
+
+        buildOrganizationTree()
+
+    }
+
+    fun buildOrganizationTree() {
+        val ING = organizationRepository.findByParentNull().first()
+
+        val wholeSale = organizationRepository.findByName("Wholesale Banking").first()
+        ING.addSubOrganization(wholeSale)
+        val trade = organizationRepository.findByName("Trade").first()
+        val lending = organizationRepository.findByName("Lending").first()
+        wholeSale.addSubOrganization(trade).addSubOrganization(lending)
+        // wholeSale END.
+
+        val domestic = organizationRepository.findByName("Domestic Banking").first()
+        ING.addSubOrganization(domestic)
+        // Domestic END.
+
+        val retail = organizationRepository.findByName("Retail Banking").first()
+        ING.addSubOrganization(retail)
+        // Retail END.
+
+        val privateBanking = organizationRepository.findByName("Private Banking").first()
+        ING.addSubOrganization(privateBanking)
+        // privateBanking END.
+
+        val HR = organizationRepository.findByName("Human Resources").first()
+        ING.addSubOrganization(HR)
+        // HR END.
+
+        val investment = organizationRepository.findByName("Investment Banking").first()
+        ING.addSubOrganization(investment)
+        // investment END.
+
 
     }
 

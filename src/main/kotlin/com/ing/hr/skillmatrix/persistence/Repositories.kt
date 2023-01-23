@@ -14,6 +14,9 @@ interface RoleRepository : JpaRepository<RoleEntity, Long> {
 interface EmployeeRepository : JpaRepository<EmployeeEntity, Long>
 
 
-interface OrganizationRepository : JpaRepository<OrganizationEntity, Long>
+interface OrganizationRepository : JpaRepository<OrganizationEntity, Long> {
+    fun findByParentNull() : List<OrganizationEntity>
+    fun findByName(name: String) : List<OrganizationEntity>
+}
 
 interface ProjectRepository : JpaRepository<ProjectEntity, Long>
