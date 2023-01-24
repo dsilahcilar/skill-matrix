@@ -1,9 +1,7 @@
 package com.ing.hr.skillmatrix.controller
 
 import com.fasterxml.jackson.annotation.JsonView
-import com.ing.hr.skillmatrix.dto.Organization
-import com.ing.hr.skillmatrix.dto.OrganizationBasic
-import com.ing.hr.skillmatrix.dto.OrganizationDetailed
+import com.ing.hr.skillmatrix.dto.*
 import com.ing.hr.skillmatrix.service.OrganizationService
 import org.springframework.web.bind.annotation.*
 
@@ -21,6 +19,12 @@ class OrganizationController(val organizationService: OrganizationService) {
     @JsonView(OrganizationDetailed::class)
     fun getOrganization(@PathVariable id: Long): Organization {
         return organizationService.getOrganization(id)
+    }
+
+    @GetMapping("/{id}/employees")
+    @JsonView(EmployeeDetailed::class)
+    fun getEmployeeSkills(@PathVariable id: Long): List<Employee>? {
+        return organizationService.getOrganization(id).employees
     }
 
     @PostMapping
