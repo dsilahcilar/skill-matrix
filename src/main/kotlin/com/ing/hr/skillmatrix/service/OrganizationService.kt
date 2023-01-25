@@ -22,7 +22,7 @@ class OrganizationService(
         )
     }
 
-    fun buildSubOrganizations(subOrganizationsEntity: List<OrganizationEntity>) : List<OrganizationTree> {
+    fun buildSubOrganizations(subOrganizationsEntity: List<OrganizationEntity>): List<OrganizationTree> {
         return subOrganizationsEntity.map {
             OrganizationTree(
                 it.id!!,
@@ -41,7 +41,10 @@ class OrganizationService(
     }
 
     fun addOrganization(organization: Organization): Organization {
-        return organizationRepository.save(OrganizationEntity(organization.name)).toDTO()
+        return organizationRepository.save(
+            OrganizationEntity(organization.name)
+                .addProjects(ProjectEntity("Default"))
+        ).toDTO()
     }
 
     fun addSubOrganization(parentId: Long, organization: Organization): Organization {

@@ -28,7 +28,7 @@ class RoleService(private val roleRepository: RoleRepository) {
 fun RoleEntity.toDTO() =
     Role(id = this.id, name = this.name, this.skillSet.map { toSkill(it) }, this.employeeList.map { it.toDTO() })
 
-fun toSkill(skillEntity: SkillEntity) = Skill(skillEntity.name, emptyList())
+fun toSkill(skillEntity: SkillEntity) = Skill(skillEntity.id,skillEntity.name, emptyList())
 
 fun toRole(roleEntity: RoleEntity?) =
     Role(id = roleEntity?.id, name = roleEntity?.name, emptyList(), employee = emptyList())

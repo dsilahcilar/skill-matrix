@@ -169,18 +169,27 @@ data class ProjectEntity(
     @ManyToOne
     var organization: OrganizationEntity? = null
 
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     var projectSkills: MutableList<ProjectSkillEntity> = mutableListOf()
+
+    fun addProjectSkill(projectSkillEntity: ProjectSkillEntity) {
+        projectSkillEntity.project = this
+        this.projectSkills.add(projectSkillEntity)
+    }
 }
 
 @Entity
 @Table(name = "project_skill")
 data class ProjectSkillEntity(
-    @Id @GeneratedValue val id: Long? = null,
     @OneToOne
-    val project: ProjectEntity,
-    @OneToOne
-    val skill: SkillEntity,
+    var skill: SkillEntity,
     val level: Int
-)
+) {
+    @Id
+    @GeneratedValue
+    val id: Long? = null
+
+    @OneToOne
+    var project: ProjectEntity? = null
+}
 

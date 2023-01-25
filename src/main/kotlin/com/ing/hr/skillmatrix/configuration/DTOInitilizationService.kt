@@ -33,7 +33,7 @@ class DTOInitilizationService(
 
     private fun addProjects(organizationID: Long) {
         (1..5).map {
-            projectService.add(Project(dataGenerators.project.generate()))
+            projectService.add(Project(name = dataGenerators.project.generate()))
         }.forEach {
             organizationService.addProject(organizationID, it)
         }

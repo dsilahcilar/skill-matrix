@@ -19,5 +19,5 @@ class SkillService(private val skillRepository: SkillRepository) {
 
 }
 
-fun SkillEntity.toDTO() = Skill(this.name, this.roles.map { toRole(it) })
+fun SkillEntity.toDTO() = Skill(this.id,this.name, this.roles.map { toRole(it) })
 

@@ -27,6 +27,13 @@ class OrganizationController(val organizationService: OrganizationService) {
         return organizationService.getOrganization(id).employees
     }
 
+    @GetMapping("/{id}/projects")
+    @JsonView(ProjectList::class)
+    fun getProjects(@PathVariable id: Long): List<Project>? {
+        return organizationService.getOrganization(id).projects
+    }
+
+
     @PostMapping
     @JsonView(OrganizationDetailed::class)
     fun addOrganization(@RequestBody organization: Organization) {

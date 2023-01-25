@@ -57,9 +57,11 @@ data class Role(
 )
 
 data class Skill(
-    @JsonView(RoleBasic::class)
+    @JsonView(RoleBasic::class, ProjectDetailed::class)
+    val id: Long? = null,
+    @JsonView(ProjectDetailed::class)
     val name: String,
-    val roles: List<Role>
+    val roles: List<Role>?
 )
 
 @JsonView(EmployeeDetailed::class)
@@ -68,14 +70,22 @@ data class EmployeeSkill(
     val level: Int
 )
 
+interface ProjectList
+
+interface ProjectDetailed : ProjectList
+
+@JsonView(ProjectList::class)
 data class Project(
-    @JsonView(OrganizationDetailed::class)
-    val name: String
+    @JsonView(ProjectList::class)
+    val id: Long? = null,
+    @JsonView(ProjectList::class)
+    val name: String,
+    @JsonView(ProjectDetailed::class)
+    val projectSkills: List<ProjectSkill> = emptyList()
 )
 
-//TODO: Project and projectSkills relationships should be added to DTO init class.
+@JsonView(ProjectDetailed::class)
 data class ProjectSkill(
-    val project: Project,
     val skill: Skill,
     val level: Int
 )
