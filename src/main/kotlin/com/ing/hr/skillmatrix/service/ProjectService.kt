@@ -21,10 +21,10 @@ class ProjectService(private val projectRepository: ProjectRepository, private v
     fun addProjectSkills(id: Long, projectSkillRequests: List<ProjectSkillRequest>): List<ProjectSkill> {
         val projectEntity = projectRepository.findById(id).get()
         projectSkillRequests.filter {
-            it.level > 0
+            it.minLevel > 0
         }.forEach {
             val skillEntity = skillRepository.findById(it.skillId).get()
-            projectEntity.addProjectSkill(ProjectSkillEntity(skillEntity, it.level))
+            projectEntity.addProjectSkill(ProjectSkillEntity(skillEntity, it.minLevel))
         }
         return projectRepository.save(projectEntity).toDTO().projectSkills
     }
