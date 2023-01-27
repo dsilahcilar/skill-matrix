@@ -96,6 +96,12 @@ data class EmployeeEntity(
         newSkills.forEach { this.addSkill(it) }
         return this
     }
+
+    fun deleteExistingSkills(): EmployeeEntity {
+        this.skills = mutableListOf()
+        return this
+    }
+
 }
 
 @Entity

@@ -1,6 +1,7 @@
 package com.ing.hr.skillmatrix.service
 
 import com.ing.hr.skillmatrix.dto.Employee
+import com.ing.hr.skillmatrix.dto.EmployeeSkillRequest
 import com.ing.hr.skillmatrix.dto.Role
 import com.ing.hr.skillmatrix.persistence.*
 import org.springframework.stereotype.Service
@@ -39,6 +40,20 @@ class EmployeeService(
     fun addRole(employeeID: Long, role: Role): Employee {
         val newEmployee = Employee(role = role)
         return updateEmployee(employeeID, newEmployee)
+    }
+
+    fun updateSkills(id: Long, employeeSkillRequest: List<EmployeeSkillRequest>): Employee {
+        val employee = employeeRepository.findById(id).get()
+        employee.deleteExistingSkills()
+
+        employeeSkillRequest.map {
+            val skill = skillRepository.findById(it.skillId).get()
+            EmployeeSkillEntity(skill = skill, level = it.level)
+        }.forEach {
+            employee.addSkill(it)
+        }
+
+        return employeeRepository.save(employee).toDTO()
     }
 
 }
