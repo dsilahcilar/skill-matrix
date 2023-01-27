@@ -32,10 +32,13 @@ class JPAInitializationService(
         val docker = skillRepository.save(SkillEntity(name = "Docker"))
         val ansible = skillRepository.save(SkillEntity(name = "Ansible"))
         val aws = skillRepository.save(SkillEntity(name = "AWS"))
+        val angular = skillRepository.save(SkillEntity(name = "Angular"))
+        val react = skillRepository.save(SkillEntity(name = "React"))
+        val css = skillRepository.save(SkillEntity(name = "CSS"))
 
         // Assign skills to roles
         ops.addSkills(docker, ansible, aws)
-        dev.addSkills(java, kotlin, springBoot, docker)
+        dev.addSkills(java, kotlin, springBoot, docker,angular,react,css)
         cl.addSkills(docker, kotlin)
 
         roleRepository.save(ops)

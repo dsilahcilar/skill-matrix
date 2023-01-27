@@ -32,7 +32,7 @@ class EmployeeController(val employeeService: EmployeeService) {
 
     @JsonView(EmployeeDetailed::class)
     @GetMapping("/{id}/skills")
-    fun updateEmployee(@PathVariable id: Long): List<EmployeeSkill>? {
+    fun getEmployeeSkills(@PathVariable id: Long): List<EmployeeSkill>? {
         return employeeService.getEmployee(id).skills
     }
 

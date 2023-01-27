@@ -2,15 +2,8 @@ package com.ing.hr.skillmatrix.service
 
 import com.ing.hr.skillmatrix.databuilder.DataGenerators
 import com.ing.hr.skillmatrix.databuilder.ORGANIZATIONS
-import com.ing.hr.skillmatrix.dto.Employee
-import com.ing.hr.skillmatrix.dto.Organization
-import com.ing.hr.skillmatrix.dto.Project
-import com.ing.hr.skillmatrix.dto.Role
-import com.ing.hr.skillmatrix.persistence.OrganizationRepository
-import org.springframework.boot.context.event.ApplicationReadyEvent
-import org.springframework.context.event.EventListener
+import com.ing.hr.skillmatrix.dto.*
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DTOInitilizationService(
@@ -33,10 +26,19 @@ class DTOInitilizationService(
 
     private fun addProjects(organizationID: Long) {
         (1..5).map {
-            projectService.add(Project(name = dataGenerators.project.generate()))
+            projectService.add(
+                Project(name = dataGenerators.project.generate())
+            )
         }.forEach {
-            organizationService.addProject(organizationID, it)
+            organizationService.addProject(organizationID, it.id!!)
+            projectService.addProjectSkills(it.id!!, generateProjectSkills())
+            println("organizationID" + organizationID)
+            println("projectID" + it.id!!)
         }
+    }
+
+    private fun generateProjectSkills(): List<ProjectSkillRequest> {
+        return (1..5).map { ProjectSkillRequest(it.toLong(), (1..5).random()) }
     }
 
     private fun addEmployees(eachOrganization: Organization?) {

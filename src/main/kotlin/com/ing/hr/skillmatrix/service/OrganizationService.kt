@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class OrganizationService(
     private val organizationRepository: OrganizationRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
+    private val projectRepository: ProjectRepository
 ) {
 
     fun organizationTree(): OrganizationTree {
@@ -93,9 +94,16 @@ class OrganizationService(
         return minSkillLevelMap
     }
 
-    fun addProject(organizationID: Long, project: Project): Organization {
+    fun addNewProject(organizationID: Long, project: Project): Organization {
         val organization = organizationRepository.findById(organizationID).get()
         organization.addProject(ProjectEntity(project.name))
+        return organizationRepository.save(organization).toDTO()
+    }
+
+    fun addProject(organizationID: Long, projectId: Long): Organization {
+        val organization = organizationRepository.findById(organizationID).get()
+        val projectEntity = projectRepository.findById(projectId).get()
+        organization.addProject(projectEntity)
         return organizationRepository.save(organization).toDTO()
     }
 
