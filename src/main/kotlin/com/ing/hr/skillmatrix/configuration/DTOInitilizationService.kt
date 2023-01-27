@@ -32,8 +32,6 @@ class DTOInitilizationService(
         }.forEach {
             organizationService.addProject(organizationID, it.id!!)
             projectService.addProjectSkills(it.id!!, generateProjectSkills())
-            println("organizationID" + organizationID)
-            println("projectID" + it.id!!)
         }
     }
 
