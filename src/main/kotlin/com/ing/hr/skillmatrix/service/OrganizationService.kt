@@ -1,9 +1,6 @@
 package com.ing.hr.skillmatrix.service
 
-import com.ing.hr.skillmatrix.dto.EmployeeSkill
-import com.ing.hr.skillmatrix.dto.Organization
-import com.ing.hr.skillmatrix.dto.OrganizationTree
-import com.ing.hr.skillmatrix.dto.Project
+import com.ing.hr.skillmatrix.dto.*
 import com.ing.hr.skillmatrix.persistence.*
 import org.springframework.stereotype.Service
 
@@ -65,6 +62,35 @@ class OrganizationService(
     fun getOrganization(id: Long): Organization {
         val organization = organizationRepository.findById(id)
         return organization.get().toDTO()
+    }
+
+    fun getEmployees(id: Long): List<Employee>? {
+        val organization = getOrganization(id)
+        val minSkillMap = getMinSkillForAnOrganization(organization)
+        val employees = organization.employees
+        employees?.forEach { employee ->
+            employee.skills?.forEach { eachSkill ->
+                eachSkill.minLevel = minSkillMap.getOrDefault(eachSkill.skill, -1)
+            }
+        }
+        return employees
+    }
+
+    fun getMinSkillForAnOrganization(organization: Organization): HashMap<String, Int> {
+        val minSkillLevelMap = hashMapOf<String, Int>()
+        organization.projects?.forEach { eachProject ->
+            eachProject.projectSkills.forEach { projectSkill ->
+                val skill = projectSkill.skill.name
+                if (minSkillLevelMap.containsKey(skill)) {
+                    if (minSkillLevelMap.get(skill)!! < projectSkill.level) {
+                        minSkillLevelMap.put(skill, projectSkill.level)
+                    }
+                } else {
+                    minSkillLevelMap.put(skill, projectSkill.level)
+                }
+            }
+        }
+        return minSkillLevelMap
     }
 
     fun addProject(organizationID: Long, project: Project): Organization {

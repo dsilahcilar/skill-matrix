@@ -67,7 +67,8 @@ data class Skill(
 @JsonView(EmployeeDetailed::class)
 data class EmployeeSkill(
     val skill: String,
-    val level: Int
+    val level: Int,
+    var minLevel: Int = -1
 )
 
 interface ProjectList

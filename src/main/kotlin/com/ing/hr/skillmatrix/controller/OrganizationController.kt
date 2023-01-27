@@ -24,7 +24,7 @@ class OrganizationController(val organizationService: OrganizationService) {
     @GetMapping("/{id}/employees")
     @JsonView(EmployeeDetailed::class)
     fun getEmployeeSkills(@PathVariable id: Long): List<Employee>? {
-        return organizationService.getOrganization(id).employees
+        return organizationService.getEmployees(id)
     }
 
     @GetMapping("/{id}/projects")
