@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 class OrganizationService(
     private val organizationRepository: OrganizationRepository,
     private val employeeRepository: EmployeeRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val teamMetricsService: TeamMetricsService
 ) {
 
     fun organizationTree(): OrganizationTree {
@@ -77,6 +78,22 @@ class OrganizationService(
         return employees
     }
 
+    fun getUserProfiles(id: Long) : List<EmployeeProfile>? {
+        val organization = getOrganization(id)
+        val employess = getEmployees(id)
+        return employess?.map {
+            EmployeeProfile(
+                it.id!!,
+                it.firstName.orEmpty(),
+                it.lastName.orEmpty(),
+                it.email.orEmpty(),
+                it.role?.name.orEmpty(),
+                organization.name,
+                id
+            )
+        }
+    }
+
     fun getMinSkillForAnOrganization(organization: Organization): HashMap<String, Int> {
         val minSkillLevelMap = hashMapOf<String, Int>()
         organization.projects?.forEach { eachProject ->
@@ -105,6 +122,14 @@ class OrganizationService(
         val projectEntity = projectRepository.findById(projectId).get()
         organization.addProject(projectEntity)
         return organizationRepository.save(organization).toDTO()
+    }
+
+    fun getOrganizationMetric(id: Long): List<OrganizationMetric> {
+        val organizationEntity = organizationRepository.findById(id).get()
+        val skillMap = getMinSkillForAnOrganization(organizationEntity.toDTO())
+        return organizationEntity.subOrganizations.map { eachOrganization ->
+            teamMetricsService.buildOrganizationMetric(eachOrganization, skillMap)
+        }
     }
 
 }

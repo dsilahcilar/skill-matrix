@@ -2,12 +2,15 @@ package com.ing.hr.skillmatrix.controller
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ing.hr.skillmatrix.dto.*
+import com.ing.hr.skillmatrix.persistence.EmployeeSkillCloud
+import com.ing.hr.skillmatrix.persistence.EmployeeSkillCloudRepository
 import com.ing.hr.skillmatrix.service.OrganizationService
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/organizations")
-class OrganizationController(val organizationService: OrganizationService) {
+class OrganizationController(val organizationService: OrganizationService, val employeeSkillCloudRepository: EmployeeSkillCloudRepository) {
 
     @GetMapping
     @JsonView(OrganizationBasic::class)
@@ -23,8 +26,13 @@ class OrganizationController(val organizationService: OrganizationService) {
 
     @GetMapping("/{id}/employees")
     @JsonView(EmployeeDetailed::class)
-    fun getEmployeeSkills(@PathVariable id: Long): List<Employee>? {
+    fun getEmployees(@PathVariable id: Long): List<Employee>? {
         return organizationService.getEmployees(id)
+    }
+
+    @GetMapping("/{id}/profiles")
+    fun getEmployeeProfiles(@PathVariable id: Long): List<EmployeeProfile>? {
+       return organizationService.getUserProfiles(id)
     }
 
     @GetMapping("/{id}/projects")
@@ -44,5 +52,16 @@ class OrganizationController(val organizationService: OrganizationService) {
     @JsonView(OrganizationDetailed::class)
     fun addSubOrganization(@PathVariable id: Long, @RequestBody organization: Organization) {
         organizationService.addSubOrganization(id, organization)
+    }
+
+    @GetMapping("/{id}/metrics")
+    @JsonView(OrganizationMetricList::class)
+    fun organizationMetrics(@PathVariable id: Long): List<OrganizationMetric> {
+        return organizationService.getOrganizationMetric(id)
+    }
+
+    @GetMapping("/totalEmployeeSkills")
+    fun totalSkills(): List<EmployeeSkillCloud> {
+        return employeeSkillCloudRepository.calculateEmployeeSkills()
     }
 }

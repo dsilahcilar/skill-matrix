@@ -102,6 +102,13 @@ data class EmployeeEntity(
         return this
     }
 
+    fun getSkillLevel(skillName: String): Int {
+        return this.skills.firstOrNull() {
+            employeeSkillEntity ->
+            employeeSkillEntity.skill.name == skillName
+        }?.level ?: 1
+    }
+
 }
 
 @Entity
@@ -197,5 +204,17 @@ data class ProjectSkillEntity(
 
     @OneToOne
     var project: ProjectEntity? = null
+}
+
+@Entity
+@Table(name = "interview_questions")
+data class InterviewEntity(
+    var keyword: String,
+    @ElementCollection
+    val answers: List<String> = mutableListOf()
+) {
+    @Id
+    @GeneratedValue
+    val id: Long? = null
 }
 
