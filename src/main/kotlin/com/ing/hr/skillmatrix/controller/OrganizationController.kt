@@ -2,15 +2,13 @@ package com.ing.hr.skillmatrix.controller
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.ing.hr.skillmatrix.dto.*
-import com.ing.hr.skillmatrix.persistence.EmployeeSkillCloud
-import com.ing.hr.skillmatrix.persistence.EmployeeSkillCloudRepository
 import com.ing.hr.skillmatrix.service.OrganizationService
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 @RequestMapping("/organizations")
-class OrganizationController(val organizationService: OrganizationService, val employeeSkillCloudRepository: EmployeeSkillCloudRepository) {
+class OrganizationController(val organizationService: OrganizationService) {
 
     @GetMapping
     @JsonView(OrganizationBasic::class)
@@ -58,10 +56,5 @@ class OrganizationController(val organizationService: OrganizationService, val e
     @JsonView(OrganizationMetricList::class)
     fun organizationMetrics(@PathVariable id: Long): List<OrganizationMetric> {
         return organizationService.getOrganizationMetric(id)
-    }
-
-    @GetMapping("/totalEmployeeSkills")
-    fun totalSkills(): List<EmployeeSkillCloud> {
-        return employeeSkillCloudRepository.calculateEmployeeSkills()
     }
 }

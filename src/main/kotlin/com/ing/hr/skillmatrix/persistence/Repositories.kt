@@ -28,14 +28,22 @@ interface InterviewReposity : CrudRepository<InterviewEntity, Long> {
 }
 
 
-interface EmployeeSkillCloudRepository : CrudRepository<OrganizationEntity, Long> {
+interface CloudRepository : CrudRepository<OrganizationEntity, Long> {
     @Query(
-        "select new com.ing.hr.skillmatrix.persistence.EmployeeSkillCloud(skill.name, sum(emp_skill.level))\n" +
+        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, sum(emp_skill.level))\n" +
                 "from SkillEntity skill\n" +
                 "join EmployeeSkillEntity emp_skill on skill.id = emp_skill.skill.id \n" +
                 "group by skill.name"
     )
-    fun calculateEmployeeSkills(): List<EmployeeSkillCloud>
+    fun calculateEmployeeSkills(): List<SkillCloud>
+
+    @Query(
+        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, sum(projectSkill.level)) \n" +
+                "from ProjectSkillEntity projectSkill\n" +
+                "join SkillEntity skill on projectSkill.skill.id = skill.id \n" +
+                "group by skill.name"
+    )
+    fun calculateRequiredSkills(): List<SkillCloud>
 }
 
-data class EmployeeSkillCloud(val name: String, val value: Long)
+data class SkillCloud(val name: String, val value: Long)
