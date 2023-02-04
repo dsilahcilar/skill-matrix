@@ -46,4 +46,4 @@ interface CloudRepository : CrudRepository<OrganizationEntity, Long> {
     fun calculateRequiredSkills(): List<SkillCloud>
 }
 
-data class SkillCloud(val name: String, val value: Long)
+data class SkillCloud(val text: String, val value: Long)
