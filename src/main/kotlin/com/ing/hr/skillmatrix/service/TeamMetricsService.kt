@@ -22,6 +22,7 @@ class TeamMetricsService {
 
         return OrganizationMetric(
             organizationEntity.id,
+            organizationEntity.name,
             numberOfRequiredSkills,
             numberOfEmployees,
             numberOfProjects,

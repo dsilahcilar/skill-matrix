@@ -20,6 +20,8 @@ data class OrganizationMetric(
     @JsonView(OrganizationMetricList::class)
     val organizationId: Long? = null,
     @JsonView(OrganizationMetricList::class)
+    val teamName: String,
+    @JsonView(OrganizationMetricList::class)
     val numberOfRequiredSkills: Int = 0,
     @JsonView(OrganizationMetricList::class)
     val numberOfEmployees: Int = 0,
