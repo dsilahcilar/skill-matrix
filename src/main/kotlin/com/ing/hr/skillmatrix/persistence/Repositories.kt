@@ -1,5 +1,6 @@
 package com.ing.hr.skillmatrix.persistence
 
+import au.com.dius.pact.core.support.json.JsonToken
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
@@ -30,7 +31,7 @@ interface InterviewReposity : CrudRepository<InterviewEntity, Long> {
 
 interface CloudRepository : CrudRepository<OrganizationEntity, Long> {
     @Query(
-        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, sum(emp_skill.level))\n" +
+        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, round(avg(emp_skill.level), 2))\n" +
                 "from SkillEntity skill\n" +
                 "join EmployeeSkillEntity emp_skill on skill.id = emp_skill.skill.id \n" +
                 "group by skill.name"
@@ -38,7 +39,7 @@ interface CloudRepository : CrudRepository<OrganizationEntity, Long> {
     fun calculateEmployeeSkills(): List<SkillCloud>
 
     @Query(
-        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, sum(projectSkill.level)) \n" +
+        "select new com.ing.hr.skillmatrix.persistence.SkillCloud(skill.name, round(avg(projectSkill.level), 2)) \n" +
                 "from ProjectSkillEntity projectSkill\n" +
                 "join SkillEntity skill on projectSkill.skill.id = skill.id \n" +
                 "group by skill.name"
@@ -46,4 +47,4 @@ interface CloudRepository : CrudRepository<OrganizationEntity, Long> {
     fun calculateRequiredSkills(): List<SkillCloud>
 }
 
-data class SkillCloud(val text: String, val value: Long)
+data class SkillCloud(val text: String, val value: Double)
